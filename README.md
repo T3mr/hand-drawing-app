@@ -27,14 +27,7 @@ This project is a simple hand drawing application that allows users to draw on a
     cd hand-drawing-application
     ```
 
-2. **Create a virtual environment (optional but recommended):**
-
-    ```sh
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-    ```
-
-3. **Install the required libraries:**
+2. **Install the required libraries:**
 
     ```sh
     pip install opencv-python mediapipe numpy
