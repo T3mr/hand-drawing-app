@@ -2,11 +2,9 @@ import cv2
 import numpy as np
 import mediapipe as mp
 
-# Mediapip ve OpenCV için hazırlık
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
-# Renkler
 colors = {
     "blue": (255, 0, 0),
     "green": (0, 255, 0),
@@ -18,10 +16,8 @@ colors = {
 current_color = "red"
 drawing = False
 
-# Web kamerası açılır
 cap = cv2.VideoCapture(0)
 
-# Çizim yapabileceğimiz bir pencere
 canvas = np.zeros((480, 640, 3), np.uint8)
 
 with mp_hands.Hands(min_detection_confidence=0.7, min_tracking_confidence=0.5) as hands:
@@ -46,15 +42,13 @@ with mp_hands.Hands(min_detection_confidence=0.7, min_tracking_confidence=0.5) a
 
                 mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
         
-        # Çizim ve butonları ekrana ekle
-        frame[:50, :640] = 255  # Üst kısımda buton alanı için beyaz alan
+        frame[:50, :640] = 255 
         cv2.putText(frame, 'CLEAR', (10, 35), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
         cv2.putText(frame, 'BLUE', (130, 35), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
         cv2.putText(frame, 'GREEN', (250, 35), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         cv2.putText(frame, 'RED', (380, 35), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         cv2.putText(frame, 'YELLOW', (490, 35), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
 
-        # Buton tıklamaları kontrol edilir
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
                 index_finger_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
@@ -63,7 +57,7 @@ with mp_hands.Hands(min_detection_confidence=0.7, min_tracking_confidence=0.5) a
                 
                 if cy < 50:
                     if 0 < cx < 120:
-                        canvas[:] = 0  # Ekranı temizle
+                        canvas[:] = 0 
                     elif 120 < cx < 240:
                         current_color = "blue"
                     elif 240 < cx < 360:
@@ -73,7 +67,6 @@ with mp_hands.Hands(min_detection_confidence=0.7, min_tracking_confidence=0.5) a
                     elif 480 < cx < 600:
                         current_color = "yellow"
 
-        # Ekrana çizim ekle
         frame = cv2.add(frame, canvas)
         
         cv2.imshow('Paint', frame)
